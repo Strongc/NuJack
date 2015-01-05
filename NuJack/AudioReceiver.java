@@ -146,6 +146,8 @@ public class AudioReceiver {
 	///////////////////////////////////////////////	
 	
 	private void processInputBuffer(int shortsRead) {
+	
+		FakeSink sink = new FakeSink();
 		// We are basically trying to figure out where the edges are here,
 		// in order to find the distance between them and pass that on to
 		// the higher levels. 
@@ -166,11 +168,13 @@ public class AudioReceiver {
 			if ((meanVal < 0 && _searchState == SearchState.POSITIVE_PEAK) ||
 					(meanVal > 0 && _searchState == SearchState.NEGATIVE_PEAK)) {
 				
-				_sink.handleNextBit(_edgeDistance, _searchState == SearchState.POSITIVE_PEAK);
+				sink.handleNextBit(_edgeDistance, _searchState == SearchState.POSITIVE_PEAK);
 				_edgeDistance = 0;
 				_searchState = (_searchState == SearchState.NEGATIVE_PEAK) ? SearchState.POSITIVE_PEAK : SearchState.NEGATIVE_PEAK;
 			}
 		}
+		
+		System.out.println("test");
 	}
 	
 	///////////////////////////////////////////////
@@ -225,7 +229,9 @@ public class AudioReceiver {
     		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
     		
     		while (!_stop) {
-    			int shortsRead = _audioRecord.read(_recBuffer, 0, _recBuffer.length);
+    			//int shortsRead = _audioRecord.read(_recBuffer, 0, _recBuffer.length);
+				_recBuffer = _audioRecord.read();
+				int shortsRead = _audioRecord.getSize();
     			processInputBuffer(shortsRead);
     		}
     	}
@@ -298,13 +304,29 @@ public class AudioReceiver {
 		attachAudioResources();
 		
 		_audioRecord.startRecording();
+		
 		//_audioTrack.play();
 		
 		//_outputThread = new Thread(_outputGenerator);
-		_inputThread = new Thread(_inputProcessor);
+		//_inputThread = new Thread(_inputProcessor);
 		
 		//_outputThread.start();
-		_inputThread.start();
+		
+		// Commenting this out for now just to test this class.
+		fakeAudioRead();
+		//_inputThread.start();
+	}
+	
+	private void fakeAudioRead()
+	{
+	System.out.println("test");
+		//while (!_stop) {
+    			//int shortsRead = _audioRecord.read(_recBuffer, 0, _recBuffer.length);
+				_recBuffer = _audioRecord.read();
+				System.out.println("data: " + _recBuffer[1]);
+				int shortsRead = _audioRecord.getSize();
+    			processInputBuffer(shortsRead);
+    	//}
 	}
 	
 	public void stopAudioIO() {
@@ -344,12 +366,12 @@ public class AudioReceiver {
 		//int recBufferSize = 
 				//AudioRecord.getMinBufferSize(_sampleFrequency, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
 
-
 		/*
 		_audioRecord = new AudioRecord(MediaRecorder.AudioSource.DEFAULT,
 		        _sampleFrequency, AudioFormat.CHANNEL_IN_MONO,
 		        AudioFormat.ENCODING_PCM_16BIT, recBufferSize);
 			*/
+		_audioRecord = new FakeAudioRecord();
 		
 		_recBuffer = new short[recBufferSize * 10];
 	}

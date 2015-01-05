@@ -21,8 +21,8 @@ public class FakeSink implements IncomingSink {
 
 	public void Print()
 	{
-		Integer i1 = new Integer(1);
-		lengths.add(i1);
+		//Integer i1 = new Integer(1);
+		//lengths.add(i1);
 
 		for (Integer i : lengths)
 		{
