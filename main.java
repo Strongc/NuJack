@@ -8,7 +8,18 @@ class main
 {  
         public static void main(String args[])
         {
-	   AudioReceiver aru = new AudioReceiver(null);
-           System.out.println("Hello World Guy");
+		FakeAudioRecord fru = new FakeAudioRecord();
+		//fru.loadFile();
+		//fru.Print();
+
+		FakeSink fs = new FakeSink();
+
+		AudioReceiver aru = new AudioReceiver(fru);
+		aru.registerIncomingSink(fs);
+		aru.startAudioIO();
+
+		fs.Print();
+
+          	System.out.println("Hello World Guy");
         }
 }
