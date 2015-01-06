@@ -28,7 +28,7 @@ public class FakeAudioRecord implements IAudioRecord {
 			while (in2.ready()) {
   				String s = in2.readLine();
 				_lines.add(s);
-          			System.out.println("str:  " + s);
+          			//System.out.println("str:  " + s);
 			}
 			in2.close();
 		}

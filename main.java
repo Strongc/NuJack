@@ -8,18 +8,21 @@ class main
 {  
         public static void main(String args[])
         {
-		FakeAudioRecord fru = new FakeAudioRecord();
+		//FakeAudioRecord fru = new FakeAudioRecord();
 		//fru.loadFile();
 		//fru.Print();
 
-		FakeSink fs = new FakeSink();
+		//FakeSink fs = new FakeSink();
 
-		AudioReceiver aru = new AudioReceiver(fru);
-		aru.registerIncomingSink(fs);
-		aru.startAudioIO();
+		//AudioReceiver aru = new AudioReceiver(fru);
+		//aru.registerIncomingSink(fs);
+		//aru.startAudioIO();
 
-		fs.Print();
+		SerialDecoder decoder = new SerialDecoder();
+		decoder.start();
+		decoder.print();
 
-          	System.out.println("Hello World Guy");
+		//fs.Print();
+          	System.out.println("------DONE------");
         }
 }
