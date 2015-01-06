@@ -21,7 +21,7 @@ def writeToFile(data):
     open('new_data.txt', 'w').write('')
     for _,y in data:
         f = open('new_data.txt', 'a')
-        f.write(str(math.floor(y)) + '\n')
+        f.write(str(int(y)) + '\n')
         
 #writeToFile( [(1,1), (2,2)] ) 
 writeToFile(accum([1,0,1]))
