@@ -153,7 +153,14 @@ public class SerialDecoder {
         System.out.println("------Incoming Bytes------");
         for (Integer i : _incoming)
         {
-            System.out.println(i);
+            System.out.println("_incoming: " + i);
+        }
+        System.out.println("--------------------------");
+        
+        System.out.println("------Val Pairs----------");
+        for (Integer i : _lengths)
+        {
+            System.out.println("_incoming: " + i);
         }
         System.out.println("--------------------------");
     }
@@ -241,6 +248,9 @@ public class SerialDecoder {
 	}
 	
 	private void advanceReceiveDataState() {
+        System.out.println("--advance called. _rxByte:  " + _rxByte);
+        int res2 = (_rxByte >> 1) & 0xFF;
+                System.out.println("AD RES:  " + res2);
 		if (_rxBits == 10) {
 			if (calcParity(_rxByte >> 1) ==  (_rxByte >> 9)) {
 				synchronized(this) {
@@ -250,6 +260,8 @@ public class SerialDecoder {
 			}
 			else
 			{
+                int res = (_rxByte >> 1) & 0xFF;
+                System.out.println("RES:  " + res);
 				System.out.println("checksum failed.");
 			}
 			_rxState = ReceiveState.IDLE;
@@ -262,9 +274,15 @@ public class SerialDecoder {
 	/////////////////////////////
 	// AudioInterface Listeners
 	////////////////////////////
+    
+    private List<Integer> _lengths = new ArrayList<Integer>();
+    private List<Boolean> _trans = new ArrayList<Boolean>();
 	
 	private IncomingSink _incomingSink = new IncomingSink() {
 		public void handleNextBit(int transistionPeriod, boolean isHighToLow) {
+            _lengths.add(transistionPeriod);
+            _trans.add(isHighToLow);
+        
 			//System.out.println("Tran: " + transistionPeriod + " HL: " + isHighToLow);
 			_currentEdgeLength = transistionPeriod;
 			_currentEdgeHigh = isHighToLow;

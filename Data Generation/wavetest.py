@@ -6,7 +6,8 @@ print("Yay capstone")
 print(0b10101)
 
 
-rate, data2 = wavfile.read('0100100110001110.wav')
+#rate, data2 = wavfile.read('0100100110001110.wav')
+rate, data2 = wavfile.read('wavTones.com.unregistred.sin_1000Hz_-6dBFS_1s.wav')
 print("Rate",rate)
 print("Data2",data2)
 print(data2.dtype)
