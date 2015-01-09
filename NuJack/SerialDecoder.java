@@ -150,6 +150,7 @@ public class SerialDecoder {
 	}
     
     public void print() {
+        /*
         System.out.println("------Incoming Bytes------");
         for (Integer i : _incoming)
         {
@@ -163,6 +164,7 @@ public class SerialDecoder {
             System.out.println("_incoming: " + i);
         }
         System.out.println("--------------------------");
+        */
     }
 	
 	public void start() {
@@ -248,9 +250,11 @@ public class SerialDecoder {
 	}
 	
 	private void advanceReceiveDataState() {
-        System.out.println("--advance called. _rxByte:  " + _rxByte);
-        int res2 = (_rxByte >> 1) & 0xFF;
-                System.out.println("AD RES:  " + res2);
+        //System.out.println("--advance called. _rxByte:  " + _rxByte);
+        //System.out.println("--advance called. _rxbits:  " + _rxBits);
+        //int res2 = (_rxByte >> 1) & 0xFF;
+        //System.out.println("AD RES:  " + res2);
+        
 		if (_rxBits == 10) {
 			if (calcParity(_rxByte >> 1) ==  (_rxByte >> 9)) {
 				synchronized(this) {
@@ -261,8 +265,7 @@ public class SerialDecoder {
 			else
 			{
                 int res = (_rxByte >> 1) & 0xFF;
-                System.out.println("RES:  " + res);
-				System.out.println("checksum failed.");
+                System.out.println("checksum failed:  " + res);
 			}
 			_rxState = ReceiveState.IDLE;
 		}
@@ -283,17 +286,21 @@ public class SerialDecoder {
             _lengths.add(transistionPeriod);
             _trans.add(isHighToLow);
         
-			//System.out.println("Tran: " + transistionPeriod + " HL: " + isHighToLow);
+			System.out.println("Tran: " + transistionPeriod + " HL: " + isHighToLow);
+            
 			_currentEdgeLength = transistionPeriod;
 			_currentEdgeHigh = isHighToLow;
 			switch (_rxState) {
 			case DATA:
+                System.out.println("--DATA--");
 				receiveData();
 				break;
 			case DATANEXT:
+                System.out.println("--DATANEXT--");
 				receiveDataNext();
 				break;
 			case IDLE:
+                System.out.println("--IDLE--");
 				receiveIdle();
 				break;
 			default:

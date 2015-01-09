@@ -18,9 +18,15 @@ class main
 		//aru.registerIncomingSink(fs);
 		//aru.startAudioIO();
 
+		/*
 		SerialDecoder decoder = new SerialDecoder();
 		decoder.start();
 		decoder.print();
+		*/
+
+		
+		Decoder dec = new Decoder();
+		dec.start();
 
 		//fs.Print();
           	System.out.println("------DONE------");

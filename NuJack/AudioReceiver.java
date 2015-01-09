@@ -152,7 +152,7 @@ public class AudioReceiver {
 		// in order to find the distance between them and pass that on to
 		// the higher levels. 
 		double meanVal = 0.0;
-		System.out.println("shortsRead:  " + shortsRead);
+		//System.out.println("shortsRead:  " + shortsRead);
 		for (int i = 0; i < shortsRead; i++) {
 			
 			meanVal = addAndReturnMean(_recBuffer[i]) - addAndReturnBias(_recBuffer[i]);
@@ -167,14 +167,14 @@ public class AudioReceiver {
 			// Have we just seen a zero transistion?
 			if ((meanVal < 0 && _searchState == SearchState.POSITIVE_PEAK) ||
 					(meanVal > 0 && _searchState == SearchState.NEGATIVE_PEAK)) {
-				System.out.println("hit");
+				
 				_sink.handleNextBit(_edgeDistance, _searchState == SearchState.POSITIVE_PEAK);
 				_edgeDistance = 0;
 				_searchState = (_searchState == SearchState.NEGATIVE_PEAK) ? SearchState.POSITIVE_PEAK : SearchState.NEGATIVE_PEAK;
 			}
 		}
 		
-		System.out.println("func finished");
+		//System.out.println("func finished");
 	}
 	
 	///////////////////////////////////////////////
@@ -319,14 +319,13 @@ public class AudioReceiver {
 	
 	private void fakeAudioRead()
 	{
-	System.out.println("test");
+		//System.out.println("test");
 		//while (!_stop) {
     			//int shortsRead = _audioRecord.read(_recBuffer, 0, _recBuffer.length);
 				_recBuffer = _audioRecord.read();
 				System.out.println("data size: " + _recBuffer.length);
-				int shortsRead = _audioRecord.getSize();
-    			processInputBuffer(shortsRead);
-	System.out.println("test");
+				processInputBuffer(_recBuffer.length);
+		//System.out.println("test");
     	//}
 	}
 	
