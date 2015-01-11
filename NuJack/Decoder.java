@@ -1,5 +1,8 @@
 package NuJack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Decoder
 {
 	///////////////////////////////////////
@@ -32,7 +35,7 @@ public class Decoder
 			Freq freq = checkFreq(transistionPeriod);
         
 			System.out.println("Tran: " + transistionPeriod + " HL: " + isHighToLow);
-			System.out.println("Freq:  " + freq + "\n");
+			System.out.println("Freq:  " + freq );
             
 			_currentEdgeLength = transistionPeriod;
 			_currentEdgeHigh = isHighToLow;
@@ -69,19 +72,50 @@ public class Decoder
 			_deltaT = _lastEdgeLength;
 			
 			_rxState = ReceiveState.DATA;
+			_lastFreq = Freq.TWO;
 
-			//System.out.println("IDLE TRUE");
+			//System.out.println("IDLE TRUE\n");
 			
 			/*
 			_rxByte = 0;
 			_rxBits = 1;
 			*/
 		}
-			//System.out.println("IDLE FALSE");
+		else
+		{
+			//System.out.println("IDLE FALSE\n");
+		}
+		System.out.println("\n");
 	}
+
+	private Freq _lastFreq = Freq.ZERO;
 	
 	private void receiveData(Freq freq) {
+
+		if (freq == Freq.TWO) // 2nd part of 3rd Frequency. this happen if we come from IDLE
+		{
+			System.out.println("DATA --2--");
+		}
+		else if (freq == Freq.ZERO)
+		{
+			_rxState = ReceiveState.DATANEXT;
+			_lastFreq = Freq.ZERO;
+			System.out.println("DATA --0--");
+		}
+		else if (freq == Freq.ONE)
+		{
+			_rxState = ReceiveState.DATANEXT;
+			_lastFreq = Freq.ONE;
+			System.out.println("DATA --1--");
+		}
+		else
+		{
+			// throw error unknow freq
+		}
+		System.out.println("\n");
+
 		//if (isWithinThreshold(_currentEdgeLength, _deltaT)) {
+		/*
 		if (isWithinThreshold(_deltaT)) {
 			_rxState = ReceiveState.DATANEXT;
 			System.out.println("---0----EL: " + _currentEdgeLength + " DT: " + _deltaT);
@@ -100,9 +134,41 @@ public class Decoder
 			//System.out.println("Error.");
 			_rxState = ReceiveState.IDLE;
 		}
+		*/
 	}
+
+	private nByte _bit = new nByte();
+	private void fakeMethod()
+	{
+		//_bit.set();
+		float val = _bit.value;
+	}
+
+	private List<Integer> _bits = new ArrayList<Integer>();
 	
 	private void receiveDataNext(Freq freq) {
+
+		//todo need to handle 2 case. should never happen.
+		//if (freq == Freq.TWO || freq != _lastFreq)
+		if (freq != _lastFreq)
+		{
+			// Throw an error here and clear bit buffer
+		}
+
+		if (freq == Freq.ZERO)
+		{
+			System.out.println("--0--END");
+			_bits.add(0);
+			_rxState = ReceiveState.DATA;
+			// add zero
+		}
+		else if (freq == Freq.ONE)
+		{
+			System.out.println("--1--END");
+			_bits.add(1);
+			_rxState = ReceiveState.DATA;
+		}
+		/*
 		//if (isWithinThreshold(_currentEdgeLength, _deltaT)) {
 		if (isWithinThreshold(_deltaT)) {
 			//if (((_rxByte >> (_rxBits - 1)) & 1) == 1) {
@@ -118,11 +184,20 @@ public class Decoder
 			_rxState = ReceiveState.IDLE;
 			//System.out.println("Error.");
 		}
+		*/
 	}
 
 
 	public void start() {
 		_audioReceiver.startAudioIO();		
+	}
+
+	public void print()
+	{
+		for (Integer i : _bits)
+		{
+			System.out.println("BIT:  " + i);
+		}
 	}
 	
 	public void stop() {
