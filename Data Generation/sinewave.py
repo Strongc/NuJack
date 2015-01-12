@@ -16,11 +16,11 @@ def accum(bits):
     cords = []
     for bit in bits:
         if bit == 0:
-            cords += genCords2(50)
+            cords += genCords2(100)
         elif bit == 2:
             cords += genCords2(200)
         else:
-            cords += genCords2(100)
+            cords += genCords2(50)
     return cords
 
 def writeToFile(data):
@@ -32,7 +32,7 @@ def writeToFile(data):
 
 #writeToFile(accum([0,1,0,0,0,0,0,1,1]))
 #plt.plot(accum([0,1,0,0,0,0,0,1,1]))
-dat = accum([0,1,2,1,0,0])
+dat = accum([0,1,2,1,0,0,1,0,0,1,1])
 writeToFile(dat)
 plt.plot(dat)
 plt.show()

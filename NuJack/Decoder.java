@@ -158,11 +158,11 @@ public class Decoder
 	private Freq checkFreq(int value)
 	// TODO refactor this to return an Error for an invalid frequency.
 	{
-		if (isWithinThreshold2(value, zeroFreq))
+		if (isWithinThreshold2(value, zeroFreq*2))
 		{
 			return Freq.ZERO;
 		}
-		else if(isWithinThreshold2(value, zeroFreq*2))
+		else if(isWithinThreshold2(value, zeroFreq))
 		{
 			return Freq.ONE;
 		}
