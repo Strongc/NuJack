@@ -5,7 +5,7 @@ public class nByte
     private int _value = 0;
     private int _count = 0;
 
-    public float Value() 
+    public float GetValue() 
     {
 	    return  ((float) _value) / 10;
     }
@@ -31,9 +31,9 @@ public class nByte
 	    return true;
     }
 
-    public boolean ByteComplete()
+    public boolean IsByteComplete()
     {
-	    if (_count >= 8)
+	    if (_count >= 9)
 		    return true;
 	    else
 		    return false;

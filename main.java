@@ -24,18 +24,16 @@ class main
 		decoder.print();
 		*/
 		
-		/*
 		Decoder dec = new Decoder();
 		dec.start();
 		dec.print();
-		*/
 
 		nByte _b = new nByte();
 		_b.push(1);
 		_b.push(0);
 		_b.push(1);
-          	System.out.println(_b.intVal());
-          	System.out.println(_b.Value());
+          	//System.out.println(_b.intVal());
+          	//System.out.println(_b.GetValue());
 
 
 
