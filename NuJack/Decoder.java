@@ -24,6 +24,8 @@ public class Decoder
 	private final int _threshold = 14;
 	private final int zeroFreq = 25;
 
+	OnBytesAvailableListener _bytesAvailableListener = null;
+
 	private List<Integer> _bits = new ArrayList<Integer>();  // DEBUG
 
 	//////////////////////////////
@@ -162,11 +164,11 @@ public class Decoder
 		{
 			return Freq.ZERO;
 		}
-		else if(isWithinThreshold2(value, zeroFreq))
+		else if (isWithinThreshold2(value, zeroFreq))
 		{
 			return Freq.ONE;
 		}
-		else if(isWithinThreshold2(value, zeroFreq*4))
+		else if (isWithinThreshold2(value, zeroFreq*4))
 		{
 			return Freq.TWO;
 		}
@@ -176,6 +178,11 @@ public class Decoder
 		}
 	}
 
+	private void notifyBytesAvailable(int numberBytes) {
+		if (_bytesAvailableListener != null) {
+			_bytesAvailableListener.onBytesAvailable(numberBytes);
+		}
+	}
 	
 
 	//////////////////////////////
@@ -204,15 +211,7 @@ public class Decoder
 		_audioReceiver.setPowerFrequency(freq);
 	}
 
-	/*
 	public void registerBytesAvailableListener(OnBytesAvailableListener _listener) {
 		_bytesAvailableListener = _listener;
 	}
-
-	private void notifyBytesAvailable(int numberBytes) {
-		if (_bytesAvailableListener != null) {
-			_bytesAvailableListener.onBytesAvailable(numberBytes);
-		}
-	}
-	*/
 }
